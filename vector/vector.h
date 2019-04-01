@@ -1,22 +1,17 @@
 #ifndef __VECTOR_H__
 #define __VECTOR_H__
 
+#include "../tuple/tuple.h"
+
 class Vector {
     private:
-        double dim[3];
+        // double dim[3];
+        Tuple dim;
 
     public:
         Vector() {}
-        Vector(const double& x, const double& y, const double& z) {
-            dim[0] = x;
-            dim[1] = y;
-            dim[2] = z;
-        }
-        Vector(const Vector& rhs) {
-            for(int i = 0; i < 3; ++i) {
-                dim[i] = rhs[i];
-            }
-        }
+        Vector(const double& x, const double& y, const double& z): dim(x, y, z) {}
+        Vector(const Vector& rhs): dim(rhs.dim) {}
         ~Vector() {};
 
         // operator overloads
@@ -40,4 +35,4 @@ class Vector {
         friend Vector operator*(const double& lhs, const Vector& rhs) { return rhs.scale(lhs); }
 };
 
-#endif __VECTOR_H__
+#endif /* __VECTOR_H__ */

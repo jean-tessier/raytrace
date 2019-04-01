@@ -1,6 +1,8 @@
 #define CATCH_CONFIG_MAIN
 #include "./catch/catch.hpp"
 #include "vector.unit.cpp"
+#include "tuple.unit.cpp"
+#include "plane.unit.cpp"
 
 unsigned int Factorial(unsigned int number) {
     return number <= 1 ? number : Factorial(number - 1)* number;
