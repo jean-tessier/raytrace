@@ -1,6 +1,8 @@
 #ifndef __TUPLE_H__
 #define __TUPLE_H__
 
+#include <iostream>
+
 class Tuple {
     private:
         double values[3];
@@ -33,6 +35,10 @@ class Tuple {
         double& operator[](const int& i) { return values[i]; }
         Tuple operator+(const Tuple& rhs) const { return this->add(rhs); }
         Tuple operator-(const Tuple& rhs) const { return this->subtract(rhs); }
+        bool operator==(const Tuple& rhs) const { return (values[0] == rhs.values[0] && values[1] == rhs.values[1] && values[2] == rhs.values[2]); }
+
+        // friends
+        friend std::ostream& operator<<(std::ostream& lhs, const Tuple& rhs) { return lhs << rhs.values[0] << " " << rhs.values[1] << " " << rhs.values[2]; }
 };
 
 #endif /* __TUPLE_H__ */

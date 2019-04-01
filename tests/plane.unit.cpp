@@ -24,3 +24,12 @@ TEST_CASE( "Plane.isHitBy() appropriate calculates if vector travels through pla
     REQUIRE ( hitExpectTrue == true );
     REQUIRE ( hitExpectFalse == false );
 }
+
+TEST_CASE( "Plane.getColor() returns correct color", "[Plane]" ) {
+    const Tuple color = Tuple(255, 0, 0);
+    const Tuple pointOnPlane = Tuple(0, 0, 0);
+    const Vector normal = Vector(1, 1, 1).norm();
+    const Plane p = Plane(pointOnPlane, normal, color);
+
+    REQUIRE ( p.getColor() == color );
+}

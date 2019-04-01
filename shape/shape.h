@@ -6,7 +6,15 @@
 
 class Shape {
     private:
+    protected:
+        Tuple color;
     public:
+        Shape(): color() {}
+        Shape(const Tuple& c): color(c) {}
+        Shape(const Shape& rhs): color(rhs.color) {}
+        ~Shape() {}
+
+        Tuple getColor() const { return color; }
         virtual bool isHitBy(const Tuple& origin, const Vector& dir) const = 0;
 };
 

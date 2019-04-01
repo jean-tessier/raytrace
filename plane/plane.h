@@ -10,9 +10,10 @@ class Plane: public Shape {
         Tuple pointOnPlane;
         Vector normal;
     public:
-        Plane(): pointOnPlane(), normal() {}
-        Plane(const Tuple& p, const Vector& n): pointOnPlane(p), normal(n) {}
-        Plane(const Plane& rhs): pointOnPlane(rhs.pointOnPlane), normal(rhs.normal) {}
+        Plane(): pointOnPlane(), normal(), Shape() {}
+        Plane(const Tuple& p, const Vector& n): pointOnPlane(p), normal(n), Shape() {}
+        Plane(const Tuple& p, const Vector& n, const Tuple& c): pointOnPlane(p), normal(n), Shape(c) {}
+        Plane(const Plane& rhs): pointOnPlane(rhs.pointOnPlane), normal(rhs.normal), Shape(rhs) {} // copy shape here
         ~Plane() {}
         bool isHitBy(const Tuple& origin, const Vector& dir) const;
 };
