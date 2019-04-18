@@ -15,7 +15,7 @@ class Shape {
         ~Shape() {}
 
         Tuple getColor() const { return color; }
-        virtual bool isHitBy(const Tuple& origin, const Vector& dir) const = 0;
+        virtual double isHitBy(const Tuple& origin, const Vector& dir) const = 0;
 };
 
 #endif /* __SHAPE_H__ */
