@@ -1,0 +1,8 @@
+- Implement world.h/world.cpp
+  - Should contain all world objects - currently:
+    - camera
+    - shapes
+- Fix Camera::CaptureImage
+  - good PoC; bad for long term maintenance...
+- Implement main.cpp
+- Implement xml parsing for world data
