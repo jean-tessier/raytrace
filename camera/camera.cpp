@@ -3,15 +3,13 @@
 #include <stdio.h>
 
 #include "../plane/plane.h"
+#include "../fileHandler/fileHandler.h"
 
 bool Camera::captureImage(const std::string& fileName) {
-    FILE* pFile;
-
     int cols = 600;
     int rows = 400;
-    int brightness = 255;
-    int pixelCount = cols * rows;
-    Pixel arr[pixelCount];
+    FileHandler::Pixel arr[cols * rows];
+
     Tuple pointOnPlane{0, 0, 3};
     Vector normal{0, 0, 1};
     Tuple color{0, 255, 0};
@@ -32,29 +30,20 @@ bool Camera::captureImage(const std::string& fileName) {
             double viewportX = viewportXIncrementer * x + viewportXCoordMin;
             double viewportY = viewportYIncrementer * y + viewportYCoordMin;
             Vector viewVector{viewportX, viewportY, viewportZ};
-            std::cout << "x: " << viewportX << ", y: " << viewportY << ", z: " << viewportZ << std::endl;
 
             double t = testPlane.isHitBy(position, viewVector.norm());
-            std::cout << "t = " << t << std::endl;
 
             if (t > 0)
             {
-                std::cout << "HIT" << std::endl;
                 Tuple color = testPlane.getColor();
                 arr[y * cols + x] = {(unsigned char)(color[0] / t), (unsigned char)(color[1] / t), (unsigned char)(color[2] / t)};
             }
             else
             {
-                std::cout << "MISS" << std::endl;
-                arr[y * cols + x] = (Pixel) {255, 0, 0};
+                arr[y * cols + x] = (FileHandler::Pixel) {255, 0, 0};
             }
         }
     }
 
-    pFile = fopen(fileName.c_str(), "w");
-    fprintf(pFile, "P6 %d %d %d\n", cols, rows, brightness);
-    fwrite(arr, sizeof(Pixel), sizeof(arr), pFile);
-    fclose(pFile);
-    
-    return true;
+    return FileHandler::writeColorArrayToPPM(arr, cols, rows, fileName);
 }

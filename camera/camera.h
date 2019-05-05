@@ -21,10 +21,4 @@ class Camera {
         bool captureImage(const std::string& fileName);
 };
 
-typedef struct pixelType {
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
-} Pixel;
-
 #endif /* __CAMERA_H__ */
