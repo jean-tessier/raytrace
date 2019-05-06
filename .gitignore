@@ -3,3 +3,4 @@ test
 a.out
 *.ppm
 .DS_Store
+main

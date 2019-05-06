@@ -2,8 +2,12 @@
 #define __CAMERA_H__
 
 #include <string>
+#include <vector>
 #include "../tuple/tuple.h"
 #include "../vector/vector.h"
+#include "../fileHandler/fileHandler.h"
+#include "../world/world.h"
+#include "../globals/globals.h"
 
 class Camera {
     private:
@@ -19,6 +23,9 @@ class Camera {
         Camera(const Camera& rhs): position{rhs.position} {}
         ~Camera() {}
         bool captureImage(const std::string& fileName);
+        std::vector<Pixel> captureWorld(const World& world,
+                           const unsigned int width,
+                           const unsigned int height) const;
 };
 
 #endif /* __CAMERA_H__ */

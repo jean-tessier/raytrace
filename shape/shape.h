@@ -1,6 +1,8 @@
 #ifndef __SHAPE_H__
 #define __SHAPE_H__
 
+#include <memory>
+
 #include "../tuple/tuple.h"
 #include "../vector/vector.h"
 
@@ -15,7 +17,7 @@ class Shape {
         ~Shape() {}
 
         Tuple getColor() const { return color; }
-        virtual double isHitBy(const Tuple& origin, const Vector& dir) const = 0;
+        virtual const Shape * const isHitBy(const Tuple& origin, const Vector& dir, double &distance) const = 0;
 };
 
 #endif /* __SHAPE_H__ */

@@ -9,7 +9,7 @@
     where l_0 is origin of ray
     where n is the normal of the plane
     where l is the direction of the ray */
-double Plane::isHitBy(const Tuple& origin, const Vector& dir) const {
+const Shape * const Plane::isHitBy(const Tuple &origin, const Vector &dir, double &distance) const {
     // assume all vectors are normalized
     const double denom = dir.dot(normal);
 
@@ -21,8 +21,13 @@ double Plane::isHitBy(const Tuple& origin, const Vector& dir) const {
         const double numerator = pointAdjustByOrigin.dot(normalAsTuple);
         const double t = numerator / denom;
 
-        return t;
+        if (t > 0)
+        {
+            distance = t;
+            return this;
+        }
     }
 
-    return -1.0;
+    distance = -1;
+    return nullptr;
 }

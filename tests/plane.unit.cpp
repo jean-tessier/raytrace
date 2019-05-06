@@ -18,11 +18,18 @@ TEST_CASE( "Plane.isHitBy() appropriate calculates if vector travels through pla
     const Tuple pointOnPlaneWillNotBeHit = Tuple(-1, -1, -1);
     const Plane pWillNotBeHit = Plane(pointOnPlaneWillNotBeHit, normal);
 
-    const double hitExpectGtZero = pWillBeHit.isHitBy(origin, dir);
-    const double hitExpectLteZero = pWillNotBeHit.isHitBy(origin, dir);
+    double hitExpectGtZero, \
+           hitExpectLteZero;
 
-    REQUIRE ( hitExpectGtZero > 0 );
-    REQUIRE ( hitExpectLteZero <= 0 );
+    const Shape * const hitShape = pWillBeHit.isHitBy(origin, dir, hitExpectGtZero);
+    const Shape * const notHitShape = pWillNotBeHit.isHitBy(origin, dir, hitExpectLteZero);
+
+    
+    REQUIRE ( hitShape == &pWillBeHit );
+    REQUIRE ( hitExpectGtZero > 0.0 );
+
+    REQUIRE ( hitExpectLteZero <= 0.0 );
+    REQUIRE ( notHitShape == nullptr );
 }
 
 TEST_CASE( "Plane.getColor() returns correct color", "[Plane]" ) {
