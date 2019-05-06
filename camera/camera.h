@@ -22,7 +22,7 @@ class Camera {
         {}
         Camera(const Camera& rhs): position{rhs.position} {}
         ~Camera() {}
-        bool captureImage(const std::string& fileName);
+
         std::vector<Pixel> captureWorld(const World& world,
                            const unsigned int width,
                            const unsigned int height) const;

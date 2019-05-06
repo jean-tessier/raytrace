@@ -1,4 +1,4 @@
-CC=g++ -std=c++17
+CC=g++ -std=c++17 -g
 
 PROGRAM_FILES=vector/vector.o \
 		  plane/plane.o \
@@ -34,6 +34,9 @@ main: main.cpp $(PROGRAM_FILES)
 
 test: $(PROGRAM_FILES) $(TEST_FILES)
 	$(CC) -o test tests/tests.cpp vector/vector.o plane/plane.o tuple/tuple.o camera/camera.o fileHandler/fileHandler.o world/world.o
+
+clean:
+	rm $(PROGRAM_FILES)
 
 vector/vector.o: vector/vector.cpp vector/vector.h tuple/tuple.o
 	$(CC) -c vector/vector.cpp -o vector/vector.o

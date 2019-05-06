@@ -1,0 +1,20 @@
+{
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "cpp build test",
+      "command": "make -C ${workspaceFolder} test",
+      /*"args": [
+        "-std=c++17",
+        "-g",
+        "${workspaceFolder}/tests/tests.cpp",
+        "-o",
+        "${workspaceFolder}/test"
+      ],*/
+      "options": {
+        "cwd": "/usr/bin"
+      }
+    }
+  ],
+  "version": "2.0.0"
+}
