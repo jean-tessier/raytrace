@@ -22,25 +22,34 @@ std::vector<Pixel> Camera::captureWorld(const World& world,
     std::list<std::shared_ptr<Shape const>> shapes = world.getShapes();
 
     std::vector<Pixel> imagePixels;
-    double t;
+    double distance;
+    double recentDistance;
     const Shape *hitShape;
+    const Shape *recentShape;
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-            t = -1;
-            
+            distance = -1;
+            recentDistance = -1;
+            hitShape = nullptr;
+            recentShape = nullptr;            
             double viewportX = viewportXIncrementer * x + viewportXCoordMin;
             double viewportY = viewportYIncrementer * y + viewportYCoordMin;
             Vector viewVector{viewportX, viewportY, viewportZ};
 
             for (const auto &shape : shapes) {
-                hitShape = shape->isHitBy(position, viewVector.norm(), t);
-                if (t > 0) break;
+                recentShape = shape->isHitBy(position, viewVector.norm(), recentDistance);
+                // see if the recently hit shape is closer than the previously closest shape
+                if (distance < 0 || (recentDistance > 0 && recentDistance < distance))
+                {
+                    hitShape = recentShape;
+                    distance = recentDistance;
+                }
             }
 
-            if (t > 0)
+            if (distance > 0)
             {
-                Tuple color = {0, 255, 0};// shape.getColor();
-                imagePixels.push_back({(unsigned char)(color[0] / t), (unsigned char)(color[1] / t), (unsigned char)(color[2] / t)});
+                const Tuple color = hitShape->getColor();
+                imagePixels.push_back({(unsigned char)(color[0] / distance), (unsigned char)(color[1] / distance), (unsigned char)(color[2] / distance)});
             }
             else
             {

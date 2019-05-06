@@ -14,6 +14,21 @@
       "options": {
         "cwd": "/usr/bin"
       }
+    },
+    {
+      "type": "shell",
+      "label": "cpp build main",
+      "command": "make -C ${workspaceFolder}",
+      /*"args": [
+        "-std=c++17",
+        "-g",
+        "${workspaceFolder}/tests/tests.cpp",
+        "-o",
+        "${workspaceFolder}/test"
+      ],*/
+      "options": {
+        "cwd": "/usr/bin"
+      }
     }
   ],
   "version": "2.0.0"
