@@ -9,33 +9,39 @@
 #include "globals/globals.h"
 #include "fileHandler/fileHandler.h"
 
-void parseCommandLineFlags(int argc, char **argv, std::string &fileName, unsigned int &width, unsigned int &height)
+void parseCommandLineFlags(int argc, char **argv, std::string &inputFileName, std::string &outputFileName, unsigned int &width, unsigned int &height)
 {
     if (argc > 1)
     {
-        fileName = argv[1];
-        if (argc > 3)
+        inputFileName = argv[1];
+        if (argc > 2)
         {
-            std::string convertedStr;
-            convertedStr = argv[2];
-            width = std::stod(convertedStr);
-            convertedStr = argv[3];
-            height = std::stod(convertedStr);
+            outputFileName = argv[2];
+            if (argc > 4)
+            {
+                std::string convertedStr;
+                convertedStr = argv[3];
+                width = std::stod(convertedStr);
+                convertedStr = argv[4];
+                height = std::stod(convertedStr);
+            }
         }
     }
 }
 
 int main(int argc, char **argv)
 {
-    std::shared_ptr<World> world = FileHandler::loadWorldFromFile("world.txt");
-
-    Camera camera;
+    
 
     unsigned int width = 600;
     unsigned int height = 400;
-    std::string fileName = "img.ppm";
+    std::string inputFileName = "world.txt";
+    std::string outputFileName = "img.ppm";
 
-    parseCommandLineFlags(argc, argv, fileName, width, height);
+    parseCommandLineFlags(argc, argv, inputFileName, outputFileName, width, height);
+
+    std::shared_ptr<World> world = FileHandler::loadWorldFromFile(inputFileName);
+    Camera camera;
 
     const auto pixels = camera.captureWorld((*world),
                                             width,
@@ -46,9 +52,9 @@ int main(int argc, char **argv)
         FileHandler::writeColorArrayToPPM(pixels.data(),
                                           width,
                                           height,
-                                          fileName);
+                                          outputFileName);
     
-        std::cout << "Image capture success! File written to " << fileName << std::endl;
+        std::cout << "Image capture success! File written to " << outputFileName << std::endl;
     }
     catch(...)
     {
