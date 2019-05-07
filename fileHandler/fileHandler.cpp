@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <fstream>
+#include <sstream>
 
 #include "fileHandler.h"
 
@@ -18,7 +20,7 @@ bool FileHandler::writeColorArrayToPPM(const Pixel *const colorArray,
             columnCount,
             rowCount,
             255);
-    // write the data in bulk to the destination file
+    // write the data in buColorlk to the destination file
     fwrite(colorArray,
            sizeof(Pixel),
            sizeof(Pixel) * columnCount * rowCount,
@@ -28,4 +30,70 @@ bool FileHandler::writeColorArrayToPPM(const Pixel *const colorArray,
     fclose(destinationFile);
 
     return true;
+}
+
+std::shared_ptr<World> FileHandler::loadWorldFromFile(const std::string &fileName)
+{
+    std::ifstream inputStream(fileName);
+    std::shared_ptr<World> loadedWorld = std::make_shared<World>();
+
+    std::string line;
+    std::vector<std::string> tokens;
+    while (std::getline(inputStream, line))
+    {
+        if(line == "plane")
+        {
+            std::shared_ptr<Shape const> shape = FileHandler::parsePlaneFromStream(inputStream);
+            loadedWorld->addShape(shape);
+        }
+    }
+    inputStream.close();
+
+    return loadedWorld;
+}
+
+std::vector<std::string> FileHandler::tokenizeString(const std::string &string)
+{
+    std::vector<std::string> tokens;
+    std::string token;
+    std::stringstream stream(string);
+
+    while (std::getline(stream, token, ' '))
+    {
+        if (token != "")
+        {
+            tokens.push_back(token);
+        }
+    }
+
+    return tokens;
+}
+
+std::shared_ptr<Shape const> FileHandler::parsePlaneFromStream(std::ifstream& stream)
+{
+    Tuple pointOnPlane;
+    Vector normal;
+    Tuple color;
+
+    std::string line;
+    std::vector<std::string> tokens;
+    std::getline(stream, line); // skip opening {
+    while (std::getline(stream, line) && line != "}")
+    {
+        tokens = FileHandler::tokenizeString(line);
+        if (tokens[0] == "point")
+        {
+            pointOnPlane = {std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3])};
+        }
+        else if (tokens[0] == "normal")
+        {
+            normal = {std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3])};
+        }
+        else if (tokens[0] == "color")
+        {
+            color = {std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3])};
+        }
+    }
+
+    return std::make_shared<Plane>(pointOnPlane, normal, color);
 }

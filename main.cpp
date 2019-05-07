@@ -11,24 +11,14 @@
 
 int main(int argc, char **argv)
 {
-    Tuple pointOnPlane{0, 0, 3};
-    Vector normalA{1, 0, 1};
-    Vector normalB{-1, 0, 1};
-    Tuple color{0, 0, 255};
-
-    std::shared_ptr<Shape const> planeA = std::make_shared<Plane>(pointOnPlane, normalA.norm(), color);
-    std::shared_ptr<Shape const> planeB = std::make_shared<Plane>(pointOnPlane, normalB.norm(), color);
-
-    World world;
-    world.addShape(planeA);
-    world.addShape(planeB);
+    std::shared_ptr<World> world = FileHandler::loadWorldFromFile("world.txt");
 
     Camera camera;
 
     const unsigned int width = 600;
     const unsigned int height = 400;
     const std::string fileName = "img.ppm";
-    const auto pixels = camera.captureWorld(world,
+    const auto pixels = camera.captureWorld((*world),
                                             width,
                                             height);
 

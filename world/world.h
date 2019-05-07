@@ -17,7 +17,7 @@ public:
 
     World(const World&) = delete;
     World(World&&) = delete;
-    World& operator=(const World&) = delete;
+    World& operator=(const World&) = default;
     World& operator=(World&&) = delete;
 private:
     std::list<std::shared_ptr<Shape const>> shapes;
