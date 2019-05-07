@@ -1,8 +1,8 @@
-- Implement xml parsing for world data
-- Implement other shapes
-  - sphere
-  - bounded plane
-  - others?
-- Implement lighting
-- Implement reflection
-- Implement refraction
+- [x] Implement xml parsing for world data
+- [ ] Implement other shapes
+  - [ ] sphere
+  - [ ] bounded plane
+  - [ ] others?
+- [ ] Implement lighting
+- [ ] Implement reflection
+- [ ] Implement refraction
