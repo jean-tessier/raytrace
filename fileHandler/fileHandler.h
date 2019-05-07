@@ -8,6 +8,7 @@
 #include "../globals/globals.h"
 #include "../world/world.h"
 #include "../plane/plane.h"
+#include "../sphere/sphere.h"
 
 namespace FileHandler {
     bool writeColorArrayToPPM(const Pixel *const colorArray,
@@ -20,5 +21,7 @@ namespace FileHandler {
     std::vector<std::string> tokenizeString(const std::string &string);
 
     std::shared_ptr<Shape const> parsePlaneFromStream(std::ifstream& stream);
+
+    std::shared_ptr<Shape const> parseSphereFromStream(std::ifstream& stream);
 };
 #endif

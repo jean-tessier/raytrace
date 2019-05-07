@@ -25,12 +25,12 @@ class Sphere: public Shape {
             center(center),
             radius(radius)
         {}
-        /*Plane(const Tuple& p, const Vector& n): pointOnPlane(p), normal(n), Shape() {}
-        Plane(const Tuple& p, const Vector& n, const Tuple& c): pointOnPlane(p), normal(n), Shape(c) {}
-        Plane(const Plane& rhs): pointOnPlane(rhs.pointOnPlane), normal(rhs.normal), Shape(rhs) {} // copy shape here*/
         ~Sphere() {}
 
         virtual const Shape * const isHitBy(const Tuple &origin, const Vector &dir, double &distance) const;
+
+        Tuple GetCenter() const { return center; }
+        double GetRadius() const { return radius; }
 };
 
 #endif /* __SPHERE_H__ */

@@ -15,7 +15,11 @@ class Plane: public Shape {
         Plane(const Tuple& p, const Vector& n, const Tuple& c): pointOnPlane(p), normal(n), Shape(c) {}
         Plane(const Plane& rhs): pointOnPlane(rhs.pointOnPlane), normal(rhs.normal), Shape(rhs) {} // copy shape here
         ~Plane() {}
+
         virtual const Shape * const isHitBy(const Tuple &origin, const Vector &dir, double &distance) const;
+
+        Tuple GetPointOnPlane() const { return pointOnPlane; }
+        Vector GetNormal() const { return normal; }
 };
 
 #endif /* __PLANE_H__ */

@@ -1,0 +1,6 @@
+sphere
+{
+    center 0 0 3
+    radius 1.337
+    color 0 255 0
+}

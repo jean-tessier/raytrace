@@ -20,6 +20,8 @@ class Vector {
         double& operator[](const int& i) { return dim[i]; }
         Vector operator-(const Vector& rhs) const { return this->subtract(rhs); }
         Vector operator*(const Vector& rhs) const { return this->multiply(rhs); }
+        bool operator==(const Vector& rhs) const { return dim == rhs.dim; }
+
 
         // members
         Vector add(const Vector& rhs) const;

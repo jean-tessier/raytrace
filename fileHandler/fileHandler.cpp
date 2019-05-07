@@ -39,11 +39,17 @@ std::shared_ptr<World> FileHandler::loadWorldFromFile(const std::string &fileNam
 
     std::string line;
     std::vector<std::string> tokens;
+    std::shared_ptr<Shape const> shape;
     while (std::getline(inputStream, line))
     {
         if(line == "plane")
         {
-            std::shared_ptr<Shape const> shape = FileHandler::parsePlaneFromStream(inputStream);
+            shape = FileHandler::parsePlaneFromStream(inputStream);
+            loadedWorld->addShape(shape);
+        }
+        else if(line == "sphere")
+        {
+            shape = FileHandler::parseSphereFromStream(inputStream);
             loadedWorld->addShape(shape);
         }
     }
@@ -96,4 +102,33 @@ std::shared_ptr<Shape const> FileHandler::parsePlaneFromStream(std::ifstream& st
     }
 
     return std::make_shared<Plane>(pointOnPlane, normal, color);
+}
+
+std::shared_ptr<Shape const> FileHandler::parseSphereFromStream(std::ifstream& stream)
+{
+    Tuple center;
+    double radius;
+    Tuple color;
+
+    std::string line;
+    std::vector<std::string> tokens;
+    std::getline(stream, line); // skip opening {
+    while (std::getline(stream, line) && line != "}")
+    {
+        tokens = FileHandler::tokenizeString(line);
+        if (tokens[0] == "center")
+        {
+            center = {std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3])};
+        }
+        else if (tokens[0] == "radius")
+        {
+            radius = std::stod(tokens[1]);
+        }
+        else if (tokens[0] == "color")
+        {
+            color = {std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3])};
+        }
+    }
+
+    return std::make_shared<Sphere>(center, radius, color);
 }

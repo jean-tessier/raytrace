@@ -29,7 +29,8 @@ TEST_FILES=tests/tests.cpp \
 		   tests/plane.unit.cpp \
 		   tests/tuple.unit.cpp \
 		   tests/camera.unit.cpp \
-		   tests/sphere.unit.cpp
+		   tests/sphere.unit.cpp \
+		   tests/fileHandler.unit.cpp
 
 main: main.cpp $(PROGRAM_FILES)
 	$(CC) -o main main.cpp $(PROGRAM_FILES)
