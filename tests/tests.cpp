@@ -5,6 +5,7 @@
 #include "tuple.unit.cpp"
 #include "plane.unit.cpp"
 #include "camera.unit.cpp"
+#include "sphere.unit.cpp"
 
 unsigned int Factorial(unsigned int number) {
     return number <= 1 ? number : Factorial(number - 1)* number;

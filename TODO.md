@@ -3,6 +3,7 @@
   - [ ] sphere
   - [ ] bounded plane
   - [ ] others?
+- [ ] Implement reasonable fileHandler tests
 - [ ] Implement lighting
 - [ ] Implement reflection
 - [ ] Implement refraction

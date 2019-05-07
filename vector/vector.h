@@ -11,6 +11,7 @@ class Vector {
     public:
         Vector() {}
         Vector(const double& x, const double& y, const double& z): dim(x, y, z) {}
+        Vector(const Tuple &rhs): dim(rhs) {}
         Vector(const Vector& rhs): dim(rhs.dim) {}
         ~Vector() {};
 
@@ -26,6 +27,7 @@ class Vector {
         Vector multiply(const Vector& rhs) const;
         Vector scale(const double& scaleVal) const;
         double dot(const Vector& rhs) const;
+
         double len() const;
         Vector norm() const;
         Vector reflect(const Vector& reflectionVector) const;
