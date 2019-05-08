@@ -1,30 +1,55 @@
 #include <iostream>
 #include <memory>
+#include <vector>
+#include <algorithm>
 
 #include "world/world.h"
 #include "plane/plane.h"
 #include "tuple/tuple.h"
 #include "vector/vector.h"
 #include "camera/camera.h"
+
 #include "globals/globals.h"
 #include "fileHandler/fileHandler.h"
 
+std::vector<std::string> stringifyArgv(int argc, char **argv)
+{
+    std::vector<std::string> vectorOfStringifiedArgvs;
+    std::string value;
+    for(int i = 0; i < argc; ++i)
+    {
+        value = argv[i];
+        vectorOfStringifiedArgvs.push_back(value);
+    }
+
+    return vectorOfStringifiedArgvs;
+}
+
 void parseCommandLineFlags(int argc, char **argv, std::string &inputFileName, std::string &outputFileName, unsigned int &width, unsigned int &height)
 {
-    if (argc > 1)
+    std::vector<std::string> argvs = stringifyArgv(argc, argv);
+
+    if(argvs.size() > 1)
     {
-        inputFileName = argv[1];
-        if (argc > 2)
+        auto inputFlagIterator = std::find(argvs.begin(), argvs.end(), "-i");
+        if(inputFlagIterator != argvs.end() && ++inputFlagIterator != argvs.end())
         {
-            outputFileName = argv[2];
-            if (argc > 4)
-            {
-                std::string convertedStr;
-                convertedStr = argv[3];
-                width = std::stod(convertedStr);
-                convertedStr = argv[4];
-                height = std::stod(convertedStr);
-            }
+            inputFileName = (*inputFlagIterator);
+        }
+        auto outputFlagIterator = std::find(argvs.begin(), argvs.end(), "-o");
+        if(outputFlagIterator != argvs.end() && ++outputFlagIterator != argvs.end())
+        {
+            outputFileName = (*outputFlagIterator);
+        }
+        auto widthFlagIterator = std::find(argvs.begin(), argvs.end(), "-w");
+        if(widthFlagIterator != argvs.end() && ++widthFlagIterator != argvs.end())
+        {
+            width = std::stod((*widthFlagIterator));
+        }
+        auto heightFlagIterator = std::find(argvs.begin(), argvs.end(), "-h");
+        if(heightFlagIterator != argvs.end() && ++heightFlagIterator != argvs.end())
+        {
+            height = std::stod((*heightFlagIterator));
         }
     }
 }
