@@ -40,15 +40,19 @@ int main(int argc, char **argv)
 
     parseCommandLineFlags(argc, argv, inputFileName, outputFileName, width, height);
 
-    std::shared_ptr<World> world = FileHandler::loadWorldFromFile(inputFileName);
     Camera camera;
-
-    const auto pixels = camera.captureWorld((*world),
-                                            width,
-                                            height);
-
+    World world;
+    
     try
     {
+        bool didLoadCorrectly = FileHandler::loadWorldFromFileIntoObjects(inputFileName, world, camera);
+        if (!didLoadCorrectly) throw std::runtime_error("Could not load world from file");
+
+        const auto pixels = camera.captureWorld(world,
+                                                width,
+                                                height);
+
+
         FileHandler::writeColorArrayToPPM(pixels.data(),
                                           width,
                                           height,

@@ -41,13 +41,12 @@ TEST_CASE ( "FileHandler parses camera from file successfully", "[FileHandler]" 
     const std::string testFileName{"./tests/exampleFiles/cameraExample.txt"};
     std::ifstream inputStream(testFileName);
 
-    std::shared_ptr<Camera const> camera = FileHandler::parseCameraFromStream(inputStream);
+    Camera camera = FileHandler::parseCameraFromStream(inputStream);
     
     inputStream.close();
 
-    REQUIRE( !camera == false );
-    const Tuple *const bounds = camera->GetViewportBounds();
-    REQUIRE( camera->GetPosition() == Tuple{0, 0, 0});
+    const Tuple *const bounds = camera.GetViewportBounds();
+    REQUIRE( camera.GetPosition() == Tuple{0, 0, 0});
     REQUIRE( bounds[0] == Tuple{-1, -1, 1} );
     REQUIRE( bounds[1] == Tuple{1, 1, 1} );
 }
@@ -56,11 +55,18 @@ TEST_CASE ( "FileHandler parses world from file successfully", "[FileHandler]" )
 {
     const std::string testFileName{"./tests/exampleFiles/worldExample.txt"};
 
-    std::shared_ptr<World> world = FileHandler::loadWorldFromFile(testFileName);
+    World world;
+    Camera camera;
+    bool didLoadCorrectly = FileHandler::loadWorldFromFileIntoObjects(testFileName, world, camera);
+    // std::shared_ptr<World> world = FileHandler::loadWorldFromFile(testFileName);
 
-    REQUIRE ( world != nullptr );
+    REQUIRE ( didLoadCorrectly == true );
 
-    std::list<std::shared_ptr<Shape const>> shapes = world->getShapes();
+    REQUIRE( camera.GetPosition() == Tuple{2, 2, 2} );
+    REQUIRE( camera.GetViewportBounds()[0] == Tuple{-10, -10, 10} );
+    REQUIRE( camera.GetViewportBounds()[1] == Tuple{10, 10, 10} );
+
+    std::list<std::shared_ptr<Shape const>> shapes = world.getShapes();
 
     unsigned int sphereCount = 0;
     unsigned int planeCount = 0;

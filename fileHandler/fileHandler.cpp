@@ -4,6 +4,16 @@
 
 #include "fileHandler.h"
 
+std::string &trimInPlace(std::string &str)
+{
+    if(str == "") return str;
+    const size_t first = str.find_first_not_of(' ');
+    const size_t last = str.find_last_not_of(' ');
+    str = str.substr(first, (last-first+1));
+
+    return str;
+}
+
 bool FileHandler::writeColorArrayToPPM(const Pixel *const colorArray,
                                        const unsigned int columnCount,
                                        const unsigned int rowCount,
@@ -32,30 +42,51 @@ bool FileHandler::writeColorArrayToPPM(const Pixel *const colorArray,
     return true;
 }
 
-std::shared_ptr<World> FileHandler::loadWorldFromFile(const std::string &fileName)
+bool FileHandler::loadWorldFromFileIntoObjects(const std::string &fileName, World &world, Camera &camera)
 {
-    std::ifstream inputStream(fileName);
-    std::shared_ptr<World> loadedWorld = std::make_shared<World>();
+    bool didParseWorld = false;
+    bool didParseCamera = false;
 
-    std::string line;
-    std::vector<std::string> tokens;
-    std::shared_ptr<Shape const> shape;
-    while (std::getline(inputStream, line))
+    world = World();
+    camera = Camera();
+
+    try
     {
-        if(line == "plane")
-        {
-            shape = FileHandler::parsePlaneFromStream(inputStream);
-            loadedWorld->addShape(shape);
-        }
-        else if(line == "sphere")
-        {
-            shape = FileHandler::parseSphereFromStream(inputStream);
-            loadedWorld->addShape(shape);
-        }
-    }
-    inputStream.close();
+        std::ifstream inputStream(fileName);
 
-    return loadedWorld;
+        std::string line;
+        std::vector<std::string> tokens;
+        std::shared_ptr<Shape const> shape;
+        while (std::getline(inputStream, line))
+        {
+            trimInPlace(line);
+            if (line == "camera")
+            {
+                camera = FileHandler::parseCameraFromStream(inputStream);
+                didParseCamera = true;
+            }
+            else if(line == "plane")
+            {
+                shape = FileHandler::parsePlaneFromStream(inputStream);
+                world.addShape(shape);
+            }
+            else if(line == "sphere")
+            {
+                shape = FileHandler::parseSphereFromStream(inputStream);
+                world.addShape(shape);
+            }
+        }
+        inputStream.close();
+        didParseWorld = true;
+    }
+    // catch whatever ifstream() throws
+    catch(...)
+    {
+        // probably write a message about the exception here...
+        return false;
+    }
+
+    return didParseWorld && didParseCamera;
 }
 
 std::vector<std::string> FileHandler::tokenizeString(const std::string &string)
@@ -84,7 +115,7 @@ std::shared_ptr<Shape const> FileHandler::parsePlaneFromStream(std::ifstream& st
     std::string line;
     std::vector<std::string> tokens;
     std::getline(stream, line); // skip opening {
-    while (std::getline(stream, line) && line != "}")
+    while (std::getline(stream, line) && trimInPlace(line) != "}")
     {
         tokens = FileHandler::tokenizeString(line);
         if (tokens[0] == "point")
@@ -113,7 +144,7 @@ std::shared_ptr<Shape const> FileHandler::parseSphereFromStream(std::ifstream& s
     std::string line;
     std::vector<std::string> tokens;
     std::getline(stream, line); // skip opening {
-    while (std::getline(stream, line) && line != "}")
+    while (std::getline(stream, line) && trimInPlace(line) != "}")
     {
         tokens = FileHandler::tokenizeString(line);
         if (tokens[0] == "center")
@@ -133,15 +164,18 @@ std::shared_ptr<Shape const> FileHandler::parseSphereFromStream(std::ifstream& s
     return std::make_shared<Sphere>(center, radius, color);
 }
 
-std::shared_ptr<Camera const> FileHandler::parseCameraFromStream(std::ifstream& stream)
+Camera FileHandler::parseCameraFromStream(std::ifstream& stream)
 {
     Tuple position;
-    Tuple viewportBounds[2];
+    Tuple viewportBounds[2]{
+        {-1, -1, 1},
+        {1, 1, 1}
+    };
 
     std::string line;
     std::vector<std::string> tokens;
     std::getline(stream, line); // skip opening {
-    while (std::getline(stream, line) && line != "}")
+    while (std::getline(stream, line) && trimInPlace(line) != "}")
     {
         tokens = FileHandler::tokenizeString(line);
         if (tokens[0] == "position")
@@ -151,7 +185,7 @@ std::shared_ptr<Camera const> FileHandler::parseCameraFromStream(std::ifstream& 
         else if (tokens[0] == "viewBounds")
         {
             std::getline(stream, line); // skip opening {
-            while (std::getline(stream, line) && line != "}")
+            while (std::getline(stream, line) && trimInPlace(line) != "}")
             {
                 tokens = FileHandler::tokenizeString(line);
                 if (tokens[0] == "lowerLeft")
@@ -166,5 +200,5 @@ std::shared_ptr<Camera const> FileHandler::parseCameraFromStream(std::ifstream& 
         }
     }
 
-    return std::make_shared<Camera>(position, viewportBounds);
+    return Camera(position, viewportBounds);
 }

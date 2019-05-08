@@ -15,10 +15,10 @@ public:
 
     std::list<std::shared_ptr<Shape const>> getShapes() const;
 
-    World(const World&) = delete;
-    World(World&&) = delete;
+    World(const World&) = default;
     World& operator=(const World&) = default;
-    World& operator=(World&&) = delete;
+    World(World&&) = default;
+    World& operator=(World&&) = default;
 private:
     std::list<std::shared_ptr<Shape const>> shapes;
 };

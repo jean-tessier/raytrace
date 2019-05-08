@@ -17,7 +17,7 @@ namespace FileHandler {
                               const unsigned int rowCount,
                               const std::string &fileName);
 
-    std::shared_ptr<World> loadWorldFromFile(const std::string &fileName);
+    bool loadWorldFromFileIntoObjects(const std::string &fileName, World &world, Camera &camera);
 
     std::vector<std::string> tokenizeString(const std::string &string);
 
@@ -25,6 +25,6 @@ namespace FileHandler {
 
     std::shared_ptr<Shape const> parseSphereFromStream(std::ifstream& stream);
 
-    std::shared_ptr<Camera const> parseCameraFromStream(std::ifstream& stream);
+    Camera parseCameraFromStream(std::ifstream& stream);
 };
 #endif

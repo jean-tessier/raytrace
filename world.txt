@@ -1,3 +1,13 @@
+camera
+{
+    position 0 0 0
+    viewBounds
+    {
+        lowerLeft -1.7778 -1 1
+        upperRight 1.7778 1 1
+    }
+}
+
 plane
 {
     point 0 0 3

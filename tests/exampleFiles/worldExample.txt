@@ -1,3 +1,13 @@
+camera
+{
+    position 2 2 2
+    viewBounds
+    {
+        lowerLeft -10 -10 10
+        upperRight 10 10 10
+    }
+}
+
 sphere
 {
     center 0 0 3
