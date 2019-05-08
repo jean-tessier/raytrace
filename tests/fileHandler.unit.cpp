@@ -36,6 +36,22 @@ TEST_CASE ( "FileHandler parses spheres from files successfully", "[FileHandler]
     REQUIRE ( castedShape->getColor() == Tuple{0, 255, 0} );
 }
 
+TEST_CASE ( "FileHandler parses camera from file successfully", "[FileHandler]" )
+{
+    const std::string testFileName{"./tests/exampleFiles/cameraExample.txt"};
+    std::ifstream inputStream(testFileName);
+
+    std::shared_ptr<Camera const> camera = FileHandler::parseCameraFromStream(inputStream);
+    
+    inputStream.close();
+
+    REQUIRE( !camera == false );
+    const Tuple *const bounds = camera->GetViewportBounds();
+    REQUIRE( camera->GetPosition() == Tuple{0, 0, 0});
+    REQUIRE( bounds[0] == Tuple{-1, -1, 1} );
+    REQUIRE( bounds[1] == Tuple{1, 1, 1} );
+}
+
 TEST_CASE ( "FileHandler parses world from file successfully", "[FileHandler]" )
 {
     const std::string testFileName{"./tests/exampleFiles/worldExample.txt"};

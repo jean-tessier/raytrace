@@ -53,7 +53,7 @@ sphere/sphere.o: sphere/sphere.cpp sphere/sphere.h $(SHAPE_FILES)
 tuple/tuple.o: tuple/tuple.cpp tuple/tuple.h
 	$(CC) -c tuple/tuple.cpp -o tuple/tuple.o
 
-camera/camera.o: camera/camera.cpp camera/camera.h fileHandler/fileHandler.o
+camera/camera.o: camera/camera.cpp camera/camera.h
 	$(CC) -c camera/camera.cpp -o camera/camera.o
 
 fileHandler/fileHandler.o: fileHandler/fileHandler.cpp fileHandler/fileHandler.h

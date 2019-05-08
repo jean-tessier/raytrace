@@ -9,6 +9,7 @@
 #include "../world/world.h"
 #include "../plane/plane.h"
 #include "../sphere/sphere.h"
+#include "../camera/camera.h"
 
 namespace FileHandler {
     bool writeColorArrayToPPM(const Pixel *const colorArray,
@@ -23,5 +24,7 @@ namespace FileHandler {
     std::shared_ptr<Shape const> parsePlaneFromStream(std::ifstream& stream);
 
     std::shared_ptr<Shape const> parseSphereFromStream(std::ifstream& stream);
+
+    std::shared_ptr<Camera const> parseCameraFromStream(std::ifstream& stream);
 };
 #endif

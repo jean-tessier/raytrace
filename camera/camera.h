@@ -5,7 +5,6 @@
 #include <vector>
 #include "../tuple/tuple.h"
 #include "../vector/vector.h"
-#include "../fileHandler/fileHandler.h"
 #include "../world/world.h"
 #include "../globals/globals.h"
 
@@ -20,8 +19,22 @@ class Camera {
                       {1, 1, 1}
                   }
         {}
+        Camera(const double width, const double height):
+            position{0, 0, 0}
+        {
+            const double widthPerHeight = width / height;
+            viewportBounds[0] = {-widthPerHeight, 1.0/(-widthPerHeight), 1};
+            viewportBounds[1] = {widthPerHeight, 1.0/(widthPerHeight), 1};
+        }
+        Camera(const Tuple &position, const Tuple viewportBounds[2]) :
+            position(position),
+            viewportBounds{viewportBounds[0], viewportBounds[1]}
+        {}
         Camera(const Camera& rhs): position{rhs.position} {}
         ~Camera() {}
+
+        Tuple GetPosition() const { return position; }
+        const Tuple *const GetViewportBounds() const { return viewportBounds; }
 
         std::vector<Pixel> captureWorld(const World& world,
                            const unsigned int width,

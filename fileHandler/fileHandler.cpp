@@ -20,7 +20,7 @@ bool FileHandler::writeColorArrayToPPM(const Pixel *const colorArray,
             columnCount,
             rowCount,
             255);
-    // write the data in buColorlk to the destination file
+    // write the data in bulk to the destination file
     fwrite(colorArray,
            sizeof(Pixel),
            sizeof(Pixel) * columnCount * rowCount,
@@ -131,4 +131,40 @@ std::shared_ptr<Shape const> FileHandler::parseSphereFromStream(std::ifstream& s
     }
 
     return std::make_shared<Sphere>(center, radius, color);
+}
+
+std::shared_ptr<Camera const> FileHandler::parseCameraFromStream(std::ifstream& stream)
+{
+    Tuple position;
+    Tuple viewportBounds[2];
+
+    std::string line;
+    std::vector<std::string> tokens;
+    std::getline(stream, line); // skip opening {
+    while (std::getline(stream, line) && line != "}")
+    {
+        tokens = FileHandler::tokenizeString(line);
+        if (tokens[0] == "position")
+        {
+            position = Tuple{std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3])};
+        }
+        else if (tokens[0] == "viewBounds")
+        {
+            std::getline(stream, line); // skip opening {
+            while (std::getline(stream, line) && line != "}")
+            {
+                tokens = FileHandler::tokenizeString(line);
+                if (tokens[0] == "lowerLeft")
+                {
+                    viewportBounds[0] = Tuple{std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3])};
+                }
+                else if (tokens[0] == "upperRight")
+                {
+                    viewportBounds[1] = Tuple{std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3])};
+                }
+            }
+        }
+    }
+
+    return std::make_shared<Camera>(position, viewportBounds);
 }
