@@ -27,9 +27,6 @@ A raytracer to teach myself some basic aspects of TDD and improve my C++ skills!
 
 ## TODO
 
-- [ ] Implement world coordinates independently of image dimensions
-- [ ] FIX: y is inverted for some reason
-  - prevents warping of shapes (in particular, see spheres)
 - [ ] Implement other shapes
   - [x] sphere
   - [ ] bounded plane
@@ -41,3 +38,7 @@ A raytracer to teach myself some basic aspects of TDD and improve my C++ skills!
 ## COMPLETED
 - [x] Implement xml parsing for world data
 - [x] Implement reasonable fileHandler tests
+- [x] Implement xml parsing for camera data
+
+## WON'T DO OR NO LONGER RELEVANT
+- [ ] ~~FIX: y is inverted for some reason~~
